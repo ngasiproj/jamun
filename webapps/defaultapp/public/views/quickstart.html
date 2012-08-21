@@ -1,0 +1,155 @@
+<style>
+    .welsec { max-width: 90%; _width: 90%; padding: 30px 20px 50px; border: 1px solid #b3b3b3; border-radius: 4px; margin: 0 auto; box-shadow: 0 1px 10px #a7a7a7, inset 0 1px 0 #fff; background: #fcfcfc; }
+.preclass { white-space: pre; white-space: pre-wrap; word-wrap: break-word; }
+
+ .codesection {
+   margin: 10px;
+   background-color: #DDDDDD;
+   border: 1px solid #CCCCCC;
+   border-radius: 5px 5px 5px 5px;
+   padding: 1em;
+   text-align: left;
+   
+   }
+
+</style>
+
+<div>
+<section class="welsec">
+
+
+    <h2> Jamun 0.1</h2>
+<i>Last updated: August 18, 2012</i>
+<pre class="preclass">
+<b>CONGRATULATIONS! - You have successfully installed Jamun.</b>
+
+<b>Creating your first Database CRUD app</b>
+In this example, we will create an app called "PetClinic". This is a simple database driven Pet Clinic application. It is based on the popular Petclinic application from other frameworks.
+<i>PetClinic Sample Application Requirements</i>
+The application requirement is for an information system that is accessible through a web browser. The users of the application are employees of the clinic who in the course of their work need to view and manage information regarding the veterinarians, the clients, and their pets. The sample application supports the following:
+<i>Use Cases</i>
+    View a list of veterinarians and their specialties
+    View information pertaining to a pet owner
+    Update the information pertaining to a pet owner
+    Add a new pet owner to the system
+    View information pertaining to a pet
+    Update the information pertaining to a pet
+    Add a new pet to the system
+    View information pertaining to a pet's visitation history
+    Add information pertaining to a visit to the pet's visitation history
+<i>Business Rules</i>
+    An owner may not have multiple pets with the same case-insensitive name.
+
+1)cd to /usr/jamun/webapps
+2) mkdir of your app name e.g. petclinic
+mkdir petclinic
+3)cd petclinic
+mkdir server
+4)Create the <b>model</b>s and <b>control</b>s for the entities related to the app. The entities stores and manages the data associated with the app.
+The PetClinic app requires 3 entities:<li>petowners</li><li>vets</li><li>pets</li>Both the model and control are set in the same file. The files are created with the extension ".db". The ".db" extension tells
+the server that it is a Data Object. Lets create the first Data Object, petowners.db and add the following:<div class="codesection">
+model{
+firstname:string
+lastname:string
+phone
+email(unique=true)
+address
+city
+vet
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}</div>We see that the Database Object file contains 2 sections, model and control enclosed by curly brackets.
+<b>NOTE</b>:The backend Database table or entity is automatically created by <a href="http://www.shaftwork.org">Shaftwork</a>.
+<u><i>Model</i></u>
+Some of the attributes or fields are delimited with a colon (:). The general format
+of the attribute entry is left of the colon is the attribute name and right of the
+colon is the data type. If no data type is specified, the attribute defaults to the
+default data type, which is String.<div id="codesection">Data Types
+String - string,text,email,phone,shaftuser,shaftrealm,shaftid,shaftowner
+Boolean - bool,boolean
+DateTime - date,time,datetime,timestamp,jamuntimestamp
+Number - number,num,int,integer</div><u><i>Control</i></u>
+Control or Access defines the roles allowed for a specific database action.
+Access are delimited with a colon (:). The general format
+of the access entry is left of the colon is the action name and right of the
+colon is the allowed role.<div id="codesection">Database Object Actions
+create - Create a Database Record. Returns the value of the newly created record ID (shaftid)
+read - Returns a List of Database Rows. The first row contains metadata information related to the fields - such as column name.
+update - Update a Database record. Returns a value of true if successful.
+delete - Delete a Database record. Returns a value of true if successful.</div>
+In the PetClinic example, the CRUD control access is defined by any user with the role "jamunadmin".
+For vets.db add the following:<div class="codesection">model{
+firstname:string
+lastname:string
+phone
+email(unique=true)
+specialty
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}</div>Finally for pets.db add the following:<div class="codesection">model{
+name:string(petowner.unique=true)
+petowner
+type
+age:number
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}</div>
+Now lets just test the models and controls via the REST API.
+1)Login
+The default admin user is "jamunadmin" and the default password is "jamun". Point the browser to the following URL:
+http://localhost:8657/petclinic/shaftrest/shaftusermgr/login?shaftuser=jamunadmin&shaftpassword=jamun
+JSON RESULT:<div class="codesection">{"status":"ok","response":{"roles":["jamunadmin"],"session":"jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc"}}</div>We will use the returned session value in the following requests.<div class="codesection">2)CREATE a Vet entry:
+URL: http://localhost:8657/petclinic/shaftrest/vets/create?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc&firstname=Peter&lastname=Jones&phone=555555555&email=pete@petclinic.tld&specialty=radiology
+JSON RESULT: {"status":"ok","response":"gatXKCz8"}</div><div class="codesection">3)READ Vets entries:
+URL: http://localhost:8657/petclinic/shaftrest/vets/read?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc
+JSON RESULT: {"status":"ok","response":[{"results.page.max.size":300,"results.pages":1,"columns":["firstname","lastname","phone","email","specialty","shaftid"]},["Peter","Jones","555555555","pete@petclinic.tld","radiology","gatXKCz8"]]}</div><div class="codesection">4)UPDATE a Vet entry:
+URL: http://localhost:8657/petclinic/shaftrest/vets/update?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc&shaftid=gatXKCz8&phone=4444444444
+JSON RESULT: {"status":"ok","response":true}</div><div class="codesection">5)READ Vets entries again:
+URL: http://localhost:8657/petclinic/shaftrest/vets/read?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc
+JSON RESULT: {"status":"ok","response":[{"results.page.max.size":300,"results.pages":1,"columns":["firstname","lastname","phone","email","specialty","shaftid"]},["Peter","Jones","4444444444","pete@petclinic.tld","radiology","gatXKCz8"]]}</div>
+<div class="codesection">6)DELETE a Vet entry:
+URL: http://localhost:8657/petclinic/shaftrest/vets/delete?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc&shaftid=gatXKCz8
+JSON RESULT: {"status":"ok","response":true}</div><div class="codesection">7)READ Vets entries one more time:
+URL: http://localhost:8657/petclinic/shaftrest/vets/read?shaftsessionid=jamunadmin_d18547b76ce7a8f1b758026a32e5360943e454dc
+JSON RESULT: {"status":"ok","response":[{"results.page.max.size":300,"results.pages":1,"columns":["firstname","lastname","phone","email","specialty","shaftid"]}]}</div>You may try a test for petowners and pets as well.
+As you can see the server-logic is completely decoupled from any presentation layer or view.
+Now lets render a view based on the models and controls we have just created and tested.
+<b>NOTE</b>: The complete petclinic app can be found in the examples directory (/usr/jamaun/examples).
+<u><i><b>View</b></i></u>
+Rendering a default view is as simple as pointing the browser to:<div class="codesection">http://localhost:8657/petclinic/index.jamun</div>Login with default admin, "jamunadmin", and the default password, "jamun".
+Upon login you see a Menu of buttons comprised of Vets,Petowners, Pets, and User Manager. If you view the petclinic directory (/usr/jamun/webapps/petclinic), you should see a "public" sub-directory was added by the View rendering engine. Under that directory you should also see the following sub-directories and files:<div class="codesection"><li>_assets</li><li>i18n</li><li>properties</li><li>views</li><li>jamun.html</li></div>
+These are all static resources, including javascript, that are served directly to the browser client.
+Now while logged in to the Petclinic app, lets create some Vet entries.
+1)Click the "New" Button. Add a new Vet record. In the Specialty field put "radiology" (without the quotes). Save the record by clicking "New".
+2)Lets Add another Vet record. In the Specialty field put "surgery".
+Cool but not cool enough. Manually entering certain repetitive entries, such as Specialty, would be redundant and prone to errors.
+Lets create a drop-down selection list for Specialty. In the <b>properties</b> sub-directory, use a text-editor to open and edit
+vets.json. Between the 2 curly brackets add the following:<div class="codesection">"specialty.input":{"type":"select","options":{"radiology":"radiology","radiology":"radiology","none":"none"}}</div>
+3)Refresh your browser and Log back in. You may need to Clear the Browser Cache before doing so.
+4)Click the "New" Button to add a new Vet record. You should now see a drop-down selection list for Specialty.
+
+</pre>
+</section>
+</div>
+
+
+
+
+
+
+<script>
+
+
+</script>

@@ -1,0 +1,12 @@
+model{
+name:string(petowner.unique=true)
+petowner
+type
+age:number
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}

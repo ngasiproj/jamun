@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+                      http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0"
+  metadata-complete="true">
+
+  <display-name>Welcome to Jamun</display-name>
+  <description>
+     Welcome to Jamun
+  </description>
+      <filter>
+          <filter-name>shf</filter-name>
+          <filter-class>org.shaft.ShaftAsyncFilter</filter-class>
+	<async-supported>true</async-supported>
+      </filter>
+      <filter-mapping>
+          <filter-name>shf</filter-name>
+          <url-pattern>/*</url-pattern>
+      </filter-mapping> 
+
+
+  
+   <servlet>
+          <servlet-name>Jersey Web Application</servlet-name>
+          <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+          <init-param>
+              <param-name>com.sun.jersey.config.property.packages</param-name>
+              <param-value>org.shaft.server.rest</param-value>
+          </init-param>
+          <load-on-startup>-5</load-on-startup>
+      </servlet>
+      <servlet-mapping>
+          <servlet-name>Jersey Web Application</servlet-name>
+          <url-pattern>/shaftrest/*</url-pattern>
+    </servlet-mapping>
+  
+
+ <servlet>
+  <servlet-name>jamun</servlet-name>
+  <servlet-class>org.jamun.JamunAsyncServlet</servlet-class>
+<async-supported>true</async-supported>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>jamun</servlet-name>
+    <url-pattern>*.jamun</url-pattern>
+  </servlet-mapping>
+    <mime-mapping>
+        <extension>jamun</extension>
+        <mime-type>text/html</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>json</extension>
+        <mime-type>application/json</mime-type>
+    </mime-mapping>
+
+
+ 	<error-page>
+		<error-code>404</error-code>
+		<location>/_errorpages/404.html</location>
+	</error-page> 
+
+ 	<error-page>
+		<error-code>401</error-code>
+		<location>/_errorpages/401.html</location>
+	</error-page> 
+ 	<error-page>
+		<error-code>500</error-code>
+		<location>/_errorpages/500.html</location>
+	</error-page> 
+    <welcome-file-list>
+	<welcome-file>jamun.html</welcome-file>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>index.htm</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.jamun</welcome-file>
+    </welcome-file-list>
+</web-app>

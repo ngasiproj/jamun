@@ -1,0 +1,13 @@
+model{
+firstname:string
+lastname:string
+phone
+email(unique=true)
+specialty
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}

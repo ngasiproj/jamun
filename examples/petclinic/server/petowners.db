@@ -1,0 +1,15 @@
+model{
+firstname:string
+lastname:string
+phone
+email(unique=true)
+address
+city
+vet
+}
+control{
+create:jamunadmin
+read:jamunadmin
+update:jamunadmin
+delete:jamunadmin
+}

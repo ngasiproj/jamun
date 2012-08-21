@@ -1,0 +1,9 @@
+{
+"deployment.mode":"development",
+"view.engine.class":"org.jamun.views.ShaftView",
+"view.engine.template":"default",
+"production.jquery.js.bundle":["jquery","jquery-ui"],
+"production.jamun.js.bundle":["jamun-util","jamun","jamun-ui"],
+"mobile.clients":["Apple iOS","Android","Windows Phone","Blackberry","Palm WebOS","Firebox Mobile","Chrome for Android","Skyfire","Opera Mobile","Meego","Samsung bada","UC Browser","Kindle","Nook"],
+"mobile.redirect":"jamun-mobile"
+}

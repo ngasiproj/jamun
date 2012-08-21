@@ -1,0 +1,35 @@
+Jamun is an open source (Apache Software License 2.0) framework for assembling
+loosely coupled Database, WEb, and Cloud services into GUI rich applications.
+
+Requirements
+Requires any Linux distro.
+
+Download
+http://cloud-drive.jamun/s1/f1/jamun/public/jamun.zip
+
+Install
+cd to /usr directory
+unzip jamun contents to directory.
+cd /usr 
+unzip -q -o -a jamun.zip 
+
+Run
+cd /usr/jamun/bin
+./startup.sh
+
+To run as a Deamon:
+./deamon.sh
+
+To Stop:
+./shutdown.sh
+
+Access:
+Point any HTTP enabled client to:
+http://hostname:8657/
+NOTE: Make sure access to port 8657 is enabled through any firewall.
+
+
+
+
+Community
+Contact: grwongku(AT)gmail.com
